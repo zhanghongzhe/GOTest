@@ -4,7 +4,7 @@ package Test1
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mssql"
+	_ "github.com/jinzhu/gorm/dialects/mssql" //下划线的意义，引用该包，仅仅是为了调用包的init()函数
 	"log"
 )
 
