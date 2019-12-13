@@ -8,10 +8,10 @@ import (
 	"log"
 )
 
-var server = "localhost"
+var server = "10.10.4.201"
 var port = 1433
 var user = "sa"
-var password = "Zhe123456"
+var password = "colipu"
 var database = "OnLineDB"
 
 // Define a User model struct
