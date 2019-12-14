@@ -6,46 +6,65 @@ import (
 )
 
 func Test()  {
-	user := User{}
-	if err := DB().First(&user).Error; err != nil {
+	vendor := GetVendorByID(75)
+	fmt.Println(vendor)
+
+	vendor.VendorName="上海斯年信息技术有限公司"
+
+	VendorSave(vendor)
+	vendors := GetVendors()
+	fmt.Println(len(vendors))
+}
+
+func GetVendorByID(id int64) *Vendor {
+	vendor := Vendor{}
+	if err := DB().Where(VendorId + " = ?",75).First(&vendor).Error; err != nil {
+		fmt.Println(err)
+		return nil;
+	}
+
+	return &vendor
+}
+func VendorSave(vendor *Vendor)  {
+	if err := DB().Save(&vendor).Error; err != nil {
+		fmt.Println(err)
+	}
+}
+func GetVendors() []Vendor {
+	vendors := []Vendor{}
+	if err := DB().Find(&vendors).Error; err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Println(user.LastName)
-
-	customer := Customer{}
-	if err := DB().Where("CustomerID=?",1).Find(&customer).Error; err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(customer.CustomerCode)
+	return vendors
 }
 
 func (Vendor) TableName() string {
 	return "TVendor"
 }
-func (Customer) TableName() string {
-	return "TCustomerTest"
-}
-func (User) TableName() string {
-	return "users"
-}
 
+//定义数据模型
 type Vendor struct {
-	VendorId        int32 `gorm:"column:VendorId"`
+	VendorId        int32 `gorm:"primary_key;column:VendorId"`
 	VendorCode     string `gorm:"column:VendorCode"`
 	VendorName   string `gorm:"column:VendorName"`
 	CreateTime time.Time `gorm:"column:CreateTime"`
 	UpdateTime time.Time `gorm:"column:UpdateTime"`
+	Status   string `gorm:"column:Status"`
 }
 
-type Customer struct {
-	ID        int32 `gorm:"primary_key;column:CustomerID"`
-	CustomerCode     string `gorm:"column:CustomerCode"`
-}
+//定义数据库字段常量
+const (
+	VendorId = "VendorId"
+	VendorCode = "VendorCode"
+	VendorName = "VendorName"
+	CreateTime = "CreateTime"
+	UpdateTime = "UpdateTime"
+	Status = "Status"
+)
 
-type User struct {
-	ID        uint `gorm:"primary_key"`
-	FirstName string `gorm:"column:first_name"`
-	LastName string `gorm:"column:last_name"`
-}
+//定义枚举类型常量
+const (
+	Status_A string = "A"
+	Status_P string = "P"
+)

@@ -1,0 +1,23 @@
+# REDIS,FILE,COOKIE(COOKIE Default)
+session_store = "REDIS"
+
+# REDIS,MEMCACHED,IN_MEMORY(IN_MEMORY Default)
+cache_store = ""
+
+[database]
+name = "ScmVendorDB"
+user_name = "sa"
+pwd  = "colipu"
+host = "10.10.4.201"
+port = 1433
+
+[server]
+graceful = true
+addr = ":8080"
+
+[redis]
+server = "127.0.0.1:6379"
+pwd = "123456"
+
+[memcached]
+server = "localhost:11211"

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mssql" //下划线的意义，引用该包，仅仅是为了调用包的init()函数
+	"module/log"
 )
 
 var db *gorm.DB
@@ -13,13 +14,15 @@ func DB() *gorm.DB {
 	if db == nil {
 		newDb, err := newDB()
 		if err != nil {
-			panic(err)
+			log.Panic(err)
 		}
-		/*newDb.DB().SetMaxIdleConns(10)
+		newDb.DB().SetMaxIdleConns(10)
 		newDb.DB().SetMaxOpenConns(100)
 
-		newDb.SetLogger(orm.Logger{})
-		newDb.LogMode(true)*/
+		//newDb.SetLogger(orm.Logger{})
+		newDb.LogMode(false)
+		newDb.SingularTable(true) // 如果设置为true,`User`的默认表名为`user`,使用`TableName`设置的表名不受影响
+
 		db = newDb
 	}
 
@@ -34,7 +37,5 @@ func newDB() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	db.LogMode(true)
-	db.SingularTable(true) // 如果设置为true,`User`的默认表名为`user`,使用`TableName`设置的表名不受影响
 	return db, nil
 }
